@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
+import { User } from './user/user.entity';
 import * as dotenv from 'dotenv';
 dotenv.config();
 @Module({
@@ -13,9 +16,11 @@ dotenv.config();
       username: process.env.PSQL_USERNAME,
       password: process.env.PSQL_PASSWORD,
       database: process.env.PSQL_DB_NAME,
-      entities: [],
+      entities: [User],
       synchronize: true,
     }),
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
