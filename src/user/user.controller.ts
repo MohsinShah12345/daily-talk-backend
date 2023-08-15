@@ -5,9 +5,10 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private userService: UserService) {}
   @Get('all')
-  getAllUsers(@Req() req: Request, @Res() res: Response): any {
+  async getAllUsers(@Req() req: Request, @Res() res: Response): Promise<any> {
     console.log('Get All Users');
-    res.status(200).json({ message: 'All Users Fetched' });
+    const users = await this.userService.getAllUsers();
+    res.status(200).json({ message: 'All Users Fetched', users });
   }
   @Get('users')
   getSpecificUser(
@@ -28,9 +29,11 @@ export class UserController {
   }
 
   @Put()
-  updateUser(@Req() req: Request, @Res() res: Response): any {
+  async updateUser(@Req() req: Request, @Res() res: Response): Promise<any> {
     console.log('Update User...', req.body);
-    res.status(200).json({ ...req.body });
+    const addUser = await this.userService.addUser({ ...req.body });
+    console.log('User Added..', addUser);
+    res.status(200).json({ ...addUser });
   }
 
   @Put('users')

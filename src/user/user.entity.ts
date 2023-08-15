@@ -14,9 +14,9 @@ export class User {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ default: false })
   isActive: boolean;
 
-  @Column()
+  @Column({ default: false })
   emailVerification: boolean;
 }
