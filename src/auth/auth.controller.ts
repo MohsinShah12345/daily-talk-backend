@@ -21,10 +21,11 @@ import {
   DeleteAccount,
 } from './dto/user.dto';
 import { AuthGuard } from './auth.guard';
+import { Public } from './auth.metaData';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
-
+  @Public()
   @Post('logIn')
   async logIn(
     @Req() req: Request,
@@ -64,7 +65,7 @@ export class AuthController {
       throw error;
     }
   }
-
+  @Public()
   @Post('signUp')
   async signUp(
     @Req() req: Request,
@@ -90,7 +91,7 @@ export class AuthController {
       message: 'User Already exist with same email',
     });
   }
-
+  @Public()
   @Post('forgotPassword')
   forgotPassword(
     @Req() req: Request,
@@ -113,7 +114,7 @@ export class AuthController {
 
   @Delete(':id')
   deleteAccount(
-    @Request() req,
+    @Req() req,
     @Res() res: Response,
     @Body() body: DeleteAccount,
     @Param('id') id: string,
