@@ -9,9 +9,14 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { IS_PUBLIC_KEY } from './auth.metaData';
 import { Reflector } from '@nestjs/core';
+import { AuthService } from './auth.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService, private reflector: Reflector) {}
+  constructor(
+    private jwtService: JwtService,
+    private reflector: Reflector,
+    private authService: AuthService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
@@ -22,6 +27,7 @@ export class AuthGuard implements CanActivate {
       // 💡 See this condition
       return true;
     }
+    // to get request instance
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
@@ -34,6 +40,13 @@ export class AuthGuard implements CanActivate {
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
       console.log('Payload...', payload);
+      const { email = '' } = payload;
+      const { email: userEmail, ...rest } =
+        await this.authService.findUserByEmail(email);
+      console.log('User...', rest);
+      if (email != userEmail) {
+        throw new UnauthorizedException();
+      }
       request['user'] = payload;
     } catch {
       throw new UnauthorizedException();

@@ -51,4 +51,7 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync({ userId, email });
     return accessToken;
   };
+  verifyAccount = async (): Promise<boolean> => {
+    return true;
+  };
 }

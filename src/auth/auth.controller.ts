@@ -42,6 +42,7 @@ export class AuthController {
           body.password,
           user.password,
         );
+        // if passwords match
         if (isMatch) {
           console.log('Password Match....', isMatch);
           const { password, ...rest } = user;

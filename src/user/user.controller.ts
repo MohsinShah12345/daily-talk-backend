@@ -5,7 +5,6 @@ import { Public } from '../auth/auth.metaData';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
-  @Public()
   @Get('all')
   async getAllUsers(@Req() req: Request, @Res() res: Response): Promise<any> {
     console.log('Get All Users');
