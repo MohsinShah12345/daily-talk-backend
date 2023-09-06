@@ -7,6 +7,8 @@ import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
 import { EmailModule } from './email/email.module';
 import * as dotenv from 'dotenv';
+import * as Joi from 'joi';
+import { ConfigModule } from '@nestjs/config';
 dotenv.config();
 @Module({
   imports: [
@@ -23,6 +25,15 @@ dotenv.config();
     AuthModule,
     UserModule,
     EmailModule,
+    // this will get all variables provided inside validation schema from .env , if does not exist it will show error
+    ConfigModule.forRoot({
+      validationSchema: Joi.object({
+        EMAIL_SERVICE: Joi.string().required(),
+        EMAIL_USER: Joi.string().required(),
+        EMAIL_PASSWORD: Joi.string().required(),
+        // ...
+      }),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -6,8 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthGuard } from './auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { EmailModule } from '../email/email.module';
 @Module({
   imports: [
+    EmailModule,
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
       global: true,
